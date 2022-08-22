@@ -5,7 +5,7 @@
 
 import numpy as N
 from quadric import QuadricGM
-import pivy.coin as coin
+#import pivy.coin as coin
 
 class SphericalGM(QuadricGM):
     """

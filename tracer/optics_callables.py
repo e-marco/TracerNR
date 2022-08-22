@@ -314,15 +314,24 @@ class PeriodicBoundary(object):
 		
 	def __call__(self, geometry, rays, selector):
 		energy = rays.get_energy()[selector]
+		
+		if rays.has_property('ref_index'):
+			ref_index = rays.get_ref_index()[selector]
+		else:
+			ref_index = None
+            
 		outg = rays.inherit(selector,
 			vertices=geometry.get_intersection_points_global(),
 			energy=N.zeros(len(selector)),
 			direction=rays.get_directions()[:,selector], 
-			parents=selector)
+			parents=selector,
+			ref_index=ref_index)
+		
 		outg2 = ray_bundle.RayBundle(vertices=geometry.get_intersection_points_global()+self.period*geometry.get_normals(),
 			energy=energy,
 			directions=rays.get_directions()[:,selector], 
-			parents=selector)
+			parents=selector,
+			ref_index=ref_index)
 		outg = ray_bundle.concatenate_rays([outg, outg2])
 
 		return outg
